@@ -1470,6 +1470,8 @@ public class AirportFrame extends javax.swing.JFrame {
             prefixField.setText("");
             phoneField.setText("");
             countryField.setText("");
+            
+            this.userSelect.addItem(id);
         }
     }//GEN-LAST:event_registerPassengerButtonActionPerformed
 
