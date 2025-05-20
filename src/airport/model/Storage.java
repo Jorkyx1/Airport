@@ -11,27 +11,28 @@ import java.util.ArrayList;
  * @author USUARIO
  */
 public class Storage {
+
     private static Storage instance;
-    
+
     private ArrayList<Passenger> passengers;
     private ArrayList<Flight> flights;
     private ArrayList<Location> locations;
     private ArrayList<Plane> planes;
-    
+
     private Storage() {
         this.passengers = new ArrayList<>();
         this.flights = new ArrayList<>();
         this.locations = new ArrayList<>();
         this.planes = new ArrayList<>();
     }
-    
+
     public static Storage getInstance() {
         if (instance == null) {
             instance = new Storage();
         }
         return instance;
     }
-    
+
     public boolean addPassenger(Passenger passenger) {
         for (Passenger p : this.passengers) {
             if (p.getId() == passenger.getId()) {
@@ -41,7 +42,7 @@ public class Storage {
         this.passengers.add(passenger);
         return true;
     }
-    
+
     public boolean addFlight(Flight flight) {
         for (Flight p : this.flights) {
             if (p.getId().equals(flight.getId())) {
@@ -51,7 +52,7 @@ public class Storage {
         this.flights.add(flight);
         return true;
     }
-    
+
     public boolean addLocation(Location location) {
         for (Location p : this.locations) {
             if (p.getAirportId().equals(location.getAirportId())) {
@@ -61,7 +62,7 @@ public class Storage {
         this.locations.add(location);
         return true;
     }
-    
+
     public boolean addPlane(Plane plane) {
         for (Plane p : this.planes) {
             if (p.getId().equals(plane.getId())) {
@@ -71,11 +72,29 @@ public class Storage {
         this.planes.add(plane);
         return true;
     }
-    
+
     public Passenger getPassenger(long id) {
         for (Passenger p : this.passengers) {
             if (p.getId() == id) {
                 return p;
+            }
+        }
+        return null;
+    }
+
+    public Plane getPlane(String id) {
+        for (Plane p : this.planes) {
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public Location getAirport(String id) {
+        for (Location l : this.locations) {
+            if (l.getAirportId().equals(id)) {
+                return l;
             }
         }
         return null;
