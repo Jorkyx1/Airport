@@ -1471,6 +1471,10 @@ public class AirportFrame extends javax.swing.JFrame {
             prefixField.setText("");
             phoneField.setText("");
             countryField.setText("");
+            YEAR.setText("");
+            MONTH.setSelectedIndex(0);
+            DAY.setSelectedIndex(0);
+            
 
             this.userSelect.addItem(id);
         }
@@ -1551,37 +1555,60 @@ public class AirportFrame extends javax.swing.JFrame {
 
         Response response = FlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
 
-        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
-
-        Plane plane = null;
-        for (Plane p : this.planes) {
-            if (planeId.equals(p.getId())) {
-                plane = p;
-            }
-        }
-
-        Location departure = null;
-        Location arrival = null;
-        Location scale = null;
-        for (Location location : this.locations) {
-            if (departureLocationId.equals(location.getAirportId())) {
-                departure = location;
-            }
-            if (arrivalLocationId.equals(location.getAirportId())) {
-                arrival = location;
-            }
-            if (scaleLocationId.equals(location.getAirportId())) {
-                scale = location;
-            }
-        }
-
-        if (scale == null) {
-            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
+        
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
-            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            flightIdField.setText("");
+            departureYear.setText("");
+            PLANE.setSelectedIndex(0);
+            departureLocation.setSelectedIndex(0);
+            arrivalLocation.setSelectedIndex(0);
+            scaleLocation.setSelectedIndex(0);
+            MONTH1.setSelectedIndex(0);
+            DAY1.setSelectedIndex(0);
+            departureHour.setSelectedIndex(0);
+            departureMinute.setSelectedIndex(0);
+            hourDuration1.setSelectedIndex(0);
+            hourDuration2.setSelectedIndex(0);
+            minuteDuration1.setSelectedIndex(0);
+            minuteDuration2.setSelectedIndex(0);
+            this.FLIGHT.addItem(id);
         }
+//        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
+//
+//        Plane plane = null;
+//        for (Plane p : this.planes) {
+//            if (planeId.equals(p.getId())) {
+//                plane = p;
+//            }
+//        }
+//
+//        Location departure = null;
+//        Location arrival = null;
+//        Location scale = null;
+//        for (Location location : this.locations) {
+//            if (departureLocationId.equals(location.getAirportId())) {
+//                departure = location;
+//            }
+//            if (arrivalLocationId.equals(location.getAirportId())) {
+//                arrival = location;
+//            }
+//            if (scaleLocationId.equals(location.getAirportId())) {
+//                scale = location;
+//            }
+//        }
+//
+//        if (scale == null) {
+//            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
+//        } else {
+//            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
+//        }
 
-        this.FLIGHT.addItem(id);
+        
     }//GEN-LAST:event_createFlightButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed

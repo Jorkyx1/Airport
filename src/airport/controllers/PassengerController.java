@@ -31,6 +31,22 @@ public class PassengerController {
             } catch (NumberFormatException ex) {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
+        try {
+                monthInt = Integer.parseInt(month);
+                if (monthInt < 0) {
+                    return new Response("Month must be positive", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("You must select a month", Status.BAD_REQUEST);
+            }
+        try {
+                dayInt = Integer.parseInt(day);
+                if (dayInt < 0) {
+                    return new Response("Day must be positive", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("You must select a day", Status.BAD_REQUEST);
+            }
         if (firstname.equals("")) {
                 return new Response("Firstname must be not empty", Status.BAD_REQUEST);
             }
@@ -77,7 +93,7 @@ public class PassengerController {
             }
             return new Response("Passenger created successfully", Status.CREATED);
         } catch (Exception ex) {
-            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Unexpected error"+ex, Status.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -102,6 +118,22 @@ public class PassengerController {
             Passenger passenger = storage.getPassenger(idLong);
             if (passenger == null) {
                 return new Response("Person not found", Status.NOT_FOUND);
+            }
+            try {
+                monthInt = Integer.parseInt(month);
+                if (monthInt < 0) {
+                    return new Response("Month must be positive", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("You must select a month", Status.BAD_REQUEST);
+            }
+            try {
+                dayInt = Integer.parseInt(month);
+                if (dayInt < 0) {
+                    return new Response("Day must be positive", Status.BAD_REQUEST);
+                }
+            } catch (NumberFormatException ex) {
+                return new Response("You must select a day", Status.BAD_REQUEST);
             }
             if (firstname.equals("")) {
                 return new Response("Firstname must be not empty", Status.BAD_REQUEST);
