@@ -47,6 +47,7 @@ public class FlightController {
             } catch (NumberFormatException ex) {
                 return new Response("Invalid minutes duration scale", Status.BAD_REQUEST);
             }
+            
             if (scaleLocationId != null && storage.getAirport(scaleLocationId) == null) {
                 return new Response("Scale location id does not exist", Status.BAD_REQUEST);
             } else if (scaleLocationId == null && minutesDurationScaleint != 0 || scaleLocationId == null && hoursDurationsScaleint != 0) {
