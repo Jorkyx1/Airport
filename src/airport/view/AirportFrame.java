@@ -4,6 +4,7 @@
  */
 package airport.view;
 
+import airport.controllers.LocationController;
 import airport.controllers.PassengerController;
 import airport.controllers.PlaneController;
 import airport.controllers.utils.Response;
@@ -1504,14 +1505,28 @@ public class AirportFrame extends javax.swing.JFrame {
         String name = airportNameField.getText();
         String city = airportCityField.getText();
         String country = airportCountryField.getText();
-        double latitude = Double.parseDouble(airportLatitudeField.getText());
-        double longitude = Double.parseDouble(airportLongitudeField.getText());
+        String latitude = airportLatitudeField.getText();
+        String longitude = airportLongitudeField.getText();
 
-        this.locations.add(new Location(id, name, city, country, latitude, longitude));
+        Response response = LocationController.createAirport(id, name, city, country, latitude, longitude);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            airportIdField.setText("");
+            airportNameField.setText("");
+            airportCityField.setText("");
+            airportCountryField.setText("");
+            airportLatitudeField.setText("");
+            airportLongitudeField.setText("");
 
-        this.departureLocation.addItem(id);
-        this.arrivalLocation.addItem(id);
-        this.scaleLocation.addItem(id);
+            this.departureLocation.addItem(id);
+            this.arrivalLocation.addItem(id);
+            this.scaleLocation.addItem(id);
+        }
+
     }//GEN-LAST:event_createLocationButtonActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
