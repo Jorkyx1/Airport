@@ -10,6 +10,7 @@ import airport.model.Passenger;
 import airport.model.Storage;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -207,6 +208,7 @@ public class PassengerController {
         if (passengers.isEmpty()) {
             return new Response("No passengers found", Status.NOT_FOUND);
         }
+        passengers.sort(Comparator.comparing(Passenger::getId));
         return new Response("Passengers tab updated succesfully", Status.OK, passengers);
     }
 
