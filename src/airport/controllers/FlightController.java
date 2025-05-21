@@ -27,12 +27,12 @@ public class FlightController {
         int yearInt, monthInt, dayInt, hourInt, minutesInt;
         try {
             if (id == null || id.length() != 6) {
-                return new Response("Id must be 7 digits long", Status.BAD_REQUEST);
+                return new Response("Id must be 6 digits long", Status.BAD_REQUEST);
             }
             for (int i = 0; i < 3; i++) {
                 char c = id.charAt(i);
                 if (c < 'A' || c > 'Z') {
-                    return new Response("Id must start with 2 capital letters", Status.BAD_REQUEST);
+                    return new Response("Id must start with 3 capital letters", Status.BAD_REQUEST);
                 }
             }
             for (int i = 3; i < 6; i++) {
