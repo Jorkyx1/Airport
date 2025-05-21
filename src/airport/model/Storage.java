@@ -100,4 +100,12 @@ public class Storage {
         return null;
     }
     
+    public Flight getFlight(String id) {
+        for (Flight l : this.flights) {
+            if (l.getId().equals(id)) {
+                return l;
+            }
+        }
+        return null;
+    }
 }

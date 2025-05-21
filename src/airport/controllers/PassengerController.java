@@ -117,7 +117,7 @@ public class PassengerController {
             
             Passenger passenger = storage.getPassenger(idLong);
             if (passenger == null) {
-                return new Response("Person not found", Status.NOT_FOUND);
+                return new Response("Passanger not found", Status.NOT_FOUND);
             }
             try {
                 monthInt = Integer.parseInt(month);
