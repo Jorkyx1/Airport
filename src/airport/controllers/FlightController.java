@@ -90,34 +90,38 @@ public class FlightController {
 
             boolean hasScale = !(scaleLocationId.equals("Location") || scaleLocationId.equals(""));
 
-        if (hasScale) {
-            // Validate scale location
-            if (storage.getAirport(scaleLocationId) == null) {
-                return new Response("Scale location does not exist", Status.BAD_REQUEST);
-            }else{
-                scaleLocation = storage.getAirport(scaleLocationId);
+            if (hasScale) {
+                // Validate scale location
+                if (storage.getAirport(scaleLocationId) == null) {
+                    return new Response("Scale location does not exist", Status.BAD_REQUEST);
+                } else {
+                    scaleLocation = storage.getAirport(scaleLocationId);
+                }
+
+                // Validate scale duration
+                try {
+                    hoursDurationsScaleint = Integer.parseInt(hoursDurationsScale);
+                    minutesDurationScaleint = Integer.parseInt(minutesDurationsScale);
+                } catch (NumberFormatException ex) {
+                    return new Response("You must select a valid scale duration", Status.BAD_REQUEST);
+                }
+                if (hoursDurationsScaleint == 0 && minutesDurationScaleint == 0) {
+                    return new Response("Scale duration must be greater than 0", Status.BAD_REQUEST);
+                }
+
+                // Create flight with scale
+                if (!storage.addFlight(new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt, hoursDurationsScaleint, minutesDurationScaleint))) {
+                    return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
+                }
+
+            } else {
+                // Create flight without scale
+                if (!storage.addFlight(new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt))) {
+                    return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
+                }
             }
 
-            // Validate scale duration
-            hoursDurationsScaleint = Integer.parseInt(hoursDurationsScale);
-            minutesDurationScaleint = Integer.parseInt(minutesDurationsScale);
-            if (hoursDurationsScaleint == 0 && minutesDurationScaleint == 0) {
-                return new Response("Scale duration must be greater than 0", Status.BAD_REQUEST);
-            }
-
-            // Create flight with scale
-            if (!storage.addFlight(new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt, hoursDurationsScaleint, minutesDurationScaleint))) {
-                return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
-            }
-
-        } else {
-            // Create flight without scale
-            if (!storage.addFlight(new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt))) {
-                return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
-            }
-        }
-
-        return new Response("Flight created successfully", Status.CREATED);
+            return new Response("Flight created successfully", Status.CREATED);
 
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
@@ -125,50 +129,69 @@ public class FlightController {
     }
 
     public static Response addPassenger(String passengerId, String flightId) {
-       try{ 
-       long passengerIdLong;
         try {
+            long passengerIdLong;
+            try {
                 passengerIdLong = Long.parseLong(passengerId);
                 if (passengerIdLong < 0) {
                     return new Response("Id must be positive", Status.BAD_REQUEST);
                 }
-                if(passengerId.length()>15){
+                if (passengerId.length() > 15) {
                     return new Response("Id cannot have more than 15 digits", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException ex) {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
-            if (flightId.equals("Flight")){
+            if (flightId.equals("Flight")) {
                 return new Response("You must select a flight Id", Status.BAD_REQUEST);
             }
             Storage storage = Storage.getInstance();
             Passenger passenger = storage.getPassenger(passengerIdLong);
             Flight flight = storage.getFlight(flightId);
             if (passenger == null) {
-            return new Response("Passenger not found", Status.NOT_FOUND);
+                return new Response("Passenger not found", Status.NOT_FOUND);
             }
             if (flight == null) {
-            return new Response("Flight not found", Status.NOT_FOUND);
+                return new Response("Flight not found", Status.NOT_FOUND);
             }
-        
+
             if (passenger.getFlights().contains(flight)) {
-            return new Response("Passenger already assigned to this flight", Status.BAD_REQUEST);
+                return new Response("Passenger already assigned to this flight", Status.BAD_REQUEST);
             }
             passenger.addFlight(flight);
             flight.addPassenger(passenger);
 
             return new Response("Passenger added to flight successfully", Status.OK);
-        
-        
-            
-       }catch(Exception ex){
+
+        } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
-        
+
     }
 
-    public Response delayFlight() {
-        return null;
+    public static Response delayFlight(String flightId, String hours, String minutes) {
+        int hoursInt, minutesInt;
+        Flight flight = null;
+
+        if (flightId.equals("ID")) {
+            return new Response("You must select a flight Id", Status.BAD_REQUEST);
+        }
+        try {
+            hoursInt = Integer.parseInt(hours);
+            minutesInt = Integer.parseInt(minutes);
+        } catch (NumberFormatException ex) {
+            return new Response("Hours and minutes must be numeric", Status.BAD_REQUEST);
+        }
+        Storage storage = Storage.getInstance();
+        flight = storage.getFlight(flightId);
+        if (flight == null) {
+            return new Response("Flight does not exist", Status.BAD_REQUEST);
+        }
+        if (hoursInt == 0 && minutesInt == 0) {
+            return new Response("Flight delay must be greater than zero", Status.BAD_REQUEST);
+        }
+        flight.delay(hoursInt, minutesInt);
+        return new Response("Delay added succesfully", Status.OK);
     }
 
     public Response showAllFlights() {

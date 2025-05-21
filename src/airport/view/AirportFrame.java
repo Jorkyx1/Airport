@@ -1472,7 +1472,6 @@ public class AirportFrame extends javax.swing.JFrame {
             YEAR.setText("");
             MONTH.setSelectedIndex(0);
             DAY.setSelectedIndex(0);
-            
 
             this.userSelect.addItem(id);
         }
@@ -1553,7 +1552,6 @@ public class AirportFrame extends javax.swing.JFrame {
 
         Response response = FlightController.createFlight(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
 
-        
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
@@ -1606,7 +1604,7 @@ public class AirportFrame extends javax.swing.JFrame {
 //            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
 //        }
 
-        
+
     }//GEN-LAST:event_createFlightButtonActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
@@ -1654,25 +1652,34 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
 
-           jTextField28.setText("");
-           FLIGHT.setSelectedIndex(0);
+            jTextField28.setText("");
+            FLIGHT.setSelectedIndex(0);
         }
     }//GEN-LAST:event_addToFlightButtonActionPerformed
 
     private void delayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delayButtonActionPerformed
         // TODO add your handling code here:
         String flightId = delayId.getItemAt(delayId.getSelectedIndex());
-        int hours = Integer.parseInt(delayHours.getItemAt(delayHours.getSelectedIndex()));
-        int minutes = Integer.parseInt(delayMinutes.getItemAt(delayMinutes.getSelectedIndex()));
+        String hours = delayHours.getItemAt(delayHours.getSelectedIndex());
+        String minutes = delayMinutes.getItemAt(delayMinutes.getSelectedIndex());
 
-        Flight flight = null;
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
+        Response response = FlightController.delayFlight(flightId, hours, minutes);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+
         }
+//        Flight flight = null;
+//        for (Flight f : this.flights) {
+//            if (flightId.equals(f.getId())) {
+//                flight = f;
+//            }
+//        }
 
-        flight.delay(hours, minutes);
+//        flight.delay(hours, minutes);
     }//GEN-LAST:event_delayButtonActionPerformed
 
     private void showMyFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showMyFlightsButtonActionPerformed
@@ -1698,9 +1705,19 @@ public class AirportFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);
-        for (Passenger passenger : this.passengers) {
-            model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.generateFullPhone(), passenger.getCountry(), passenger.getNumFlights()});
+        Response response = PassengerController.showAllPassengers();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            ArrayList<Passenger> passengers = (ArrayList<Passenger>) response.getObject();
+            for (Passenger passenger : passengers) {
+                model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.generateFullPhone(), passenger.getCountry(), passenger.getNumFlights()});
+            }
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_refreshPassengersButtonActionPerformed
 
     private void showAllFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllFlightsButtonActionPerformed

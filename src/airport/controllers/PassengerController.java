@@ -9,6 +9,7 @@ import airport.controllers.utils.Status;
 import airport.model.Passenger;
 import airport.model.Storage;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -201,7 +202,12 @@ public class PassengerController {
     }
 
     public static Response showAllPassengers() {
-        return null;
+        Storage storage = Storage.getInstance();
+        ArrayList<Passenger> passengers = storage.getPassengers();
+        if (passengers.isEmpty()) {
+            return new Response("No passengers found", Status.NOT_FOUND);
+        }
+        return new Response("Passengers tab updated succesfully", Status.OK, passengers);
     }
 
 }

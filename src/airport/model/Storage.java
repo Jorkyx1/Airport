@@ -108,4 +108,9 @@ public class Storage {
         }
         return null;
     }
+
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+    
 }
