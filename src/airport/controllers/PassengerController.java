@@ -208,8 +208,12 @@ public class PassengerController {
         if (passengers.isEmpty()) {
             return new Response("No passengers found", Status.NOT_FOUND);
         }
-        passengers.sort(Comparator.comparing(Passenger::getId));
-        return new Response("Passengers tab updated succesfully", Status.OK, passengers);
+        ArrayList<Passenger> clones = new ArrayList<>();
+        for (Passenger p : passengers) {
+            clones.add(p.clone());
+        }
+        clones.sort(Comparator.comparing(Passenger::getId));
+        return new Response("Passengers tab updated succesfully", Status.OK, clones);
     }
 
 }
