@@ -84,8 +84,8 @@ public class LocationController {
             return new Response("No locations found", Status.NOT_FOUND);
         }
         ArrayList<Location> clones = new ArrayList<>();
-        for (Location p : locations) {
-            clones.add(p.clone());
+        for (Location l : locations) {
+            clones.add(l.clone());
         }
         clones.sort(Comparator.comparing(Location::getAirportId));
         return new Response("Locations tab updated succesfully", Status.OK, clones);

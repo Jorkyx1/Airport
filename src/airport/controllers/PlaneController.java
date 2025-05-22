@@ -60,7 +60,7 @@ public class PlaneController {
         }
     }
 
-    public Response showAllPlanes() {
+    public static Response showAllPlanes() {
         Storage storage = Storage.getInstance();
         ArrayList<Plane> planes = storage.getPlanes();
         if (planes.isEmpty()) {

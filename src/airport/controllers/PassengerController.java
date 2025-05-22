@@ -6,6 +6,7 @@ package airport.controllers;
 
 import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
+import airport.model.Flight;
 import airport.model.Passenger;
 import airport.model.Storage;
 import java.time.LocalDate;
@@ -216,4 +217,27 @@ public class PassengerController {
         return new Response("Passengers tab updated succesfully", Status.OK, clones);
     }
 
+    public static Response showPassengerFlights(String passengerId) {
+        long passengerIdLong;
+        try {
+            passengerIdLong = Long.parseLong(passengerId);
+        } catch (NumberFormatException ex) {
+            return new Response("Select a valid passenger", Status.NOT_FOUND);
+        }
+        Storage storage = Storage.getInstance();
+        Passenger passenger = storage.getPassenger(passengerIdLong);
+        if (passenger == null) {
+            return new Response("Passenger not found", Status.NOT_FOUND);
+        }
+        ArrayList<Flight> flights = passenger.getFlights();
+        if (flights.isEmpty()) {
+            return new Response("This users does not have flights", Status.NOT_FOUND);
+        }
+        ArrayList<Flight> clones = new ArrayList<>();
+        for (Flight f : flights) {
+            clones.add(f.clone());
+        }
+        clones.sort(Comparator.comparing(Flight::getDepartureDate));
+        return new Response("User flights tab updated succesfully", Status.OK, clones);
+    }
 }

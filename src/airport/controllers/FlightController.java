@@ -12,6 +12,8 @@ import airport.model.Passenger;
 import airport.model.Plane;
 import airport.model.Storage;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -194,7 +196,17 @@ public class FlightController {
         return new Response("Delay added succesfully", Status.OK);
     }
 
-    public Response showAllFlights() {
-        return null;
+    public static Response showAllFlights() {
+        Storage storage = Storage.getInstance();
+        ArrayList<Flight> flights = storage.getFlights();
+        if (flights.isEmpty()) {
+            return new Response("No planes found", Status.NOT_FOUND);
+        }
+        ArrayList<Flight> clones = new ArrayList<>();
+        for (Flight f : flights) {
+            clones.add(f.clone());
+        }
+        clones.sort(Comparator.comparing(Flight::getDepartureDate));
+        return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
 }
