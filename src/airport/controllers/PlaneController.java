@@ -8,6 +8,8 @@ import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Plane;
 import airport.model.Storage;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -59,6 +61,17 @@ public class PlaneController {
     }
 
     public Response showAllPlanes() {
-        return null;
+        Storage storage = Storage.getInstance();
+        ArrayList<Plane> planes = storage.getPlanes();
+        if (planes.isEmpty()) {
+            return new Response("No planes found", Status.NOT_FOUND);
+        }
+        ArrayList<Plane> clones = new ArrayList<>();
+        for (Plane p : planes) {
+            clones.add(p.clone());
+        }
+        clones.sort(Comparator.comparing(Plane::getId));
+        return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
+
 }

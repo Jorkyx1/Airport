@@ -8,7 +8,7 @@ package airport.model;
  *
  * @author edangulo
  */
-public class Location {
+public class Location implements Cloneable{
     
     private final String airportId;
     private String airportName;
@@ -24,6 +24,15 @@ public class Location {
         this.airportCountry = airportCountry;
         this.airportLatitude = airportLatitude;
         this.airportLongitude = airportLongitude;
+    }
+    
+    @Override
+    public Location clone() {
+        try {
+            return (Location) super.clone(); 
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Clone not supported", e);
+        }
     }
 
     public String getAirportId() {

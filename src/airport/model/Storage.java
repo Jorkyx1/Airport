@@ -112,5 +112,17 @@ public class Storage {
     public ArrayList<Passenger> getPassengers() {
         return passengers;
     }
+
+    public ArrayList<Flight> getFlights() {
+        return flights;
+    }
+
+    public ArrayList<Location> getLocations() {
+        return locations;
+    }
+
+    public ArrayList<Plane> getPlanes() {
+        return planes;
+    }
     
 }
