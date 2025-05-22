@@ -8,6 +8,7 @@ import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Plane;
 import airport.model.Storage;
+import airport.view.AirportFrame;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -72,6 +73,16 @@ public class PlaneController {
         }
         clones.sort(Comparator.comparing(Plane::getId));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
+    }
+    
+    public static ArrayList<String> refreshPlaneCombo(){
+        Storage storage = Storage.getInstance();
+        ArrayList<Plane> planes = storage.getPlanes();
+        ArrayList<String> ids = new ArrayList<>();
+        for(Plane p : planes){
+            ids.add(p.getId());
+        }
+        return ids;
     }
 
 }

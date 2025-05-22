@@ -209,4 +209,14 @@ public class FlightController {
         clones.sort(Comparator.comparing(Flight::getDepartureDate));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
+    
+    public static ArrayList<String> refreshFlightCombo(){
+        Storage storage = Storage.getInstance();
+        ArrayList<Flight> flights = storage.getFlights();
+        ArrayList<String> ids = new ArrayList<>();
+        for(Flight f : flights){
+            ids.add(f.getId());
+        }
+        return ids;
+    }
 }

@@ -53,6 +53,11 @@ public class AirportFrame extends javax.swing.JFrame {
         this.generateHours();
         this.generateMinutes();
         this.blockPanels();
+        this.updatePlaneCombo(PlaneController.refreshPlaneCombo());
+        this.updateLocationCombo(LocationController.refreshPlaneCombo());
+        this.updateFlightCombo(FlightController.refreshFlightCombo());
+        this.updatePassenngerCombo(PassengerController.refreshPassengerCombo());
+        
     }
 
     private void blockPanels() {
@@ -95,6 +100,28 @@ public class AirportFrame extends javax.swing.JFrame {
             minuteDuration1.addItem("" + i);
             minuteDuration2.addItem("" + i);
             delayMinutes.addItem("" + i);
+        }
+    }
+    private void updatePlaneCombo(ArrayList<String> ids) {
+    for (String id : ids) {
+        PLANE.addItem(id);
+    }
+}
+    private void updateLocationCombo(ArrayList<String> ids) {
+    for (String id : ids) {
+        departureLocation.addItem(id);
+        arrivalLocation.addItem(id);
+        scaleLocation.addItem(id);
+    }
+ }
+    private void updateFlightCombo(ArrayList<String> ids){
+        for(String id : ids){
+            FLIGHT.addItem(id);
+        }
+    }
+    private void updatePassenngerCombo(ArrayList<String> ids){
+        for(String id : ids){
+            userSelect.addItem(id);
         }
     }
 
@@ -525,6 +552,11 @@ public class AirportFrame extends javax.swing.JFrame {
 
         PLANE.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         PLANE.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plane" }));
+        PLANE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PLANEActionPerformed(evt);
+            }
+        });
 
         departureLocation.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         departureLocation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Location" }));
@@ -1329,7 +1361,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel12.setText("Brand:");
         jPanel3.add(jLabel12);
-        jLabel12.setBounds(53, 157, 52, 25);
+        jLabel12.setBounds(53, 157, 50, 25);
 
         airplaneBrand.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneBrand);
@@ -1342,7 +1374,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel13.setText("Model:");
         jPanel3.add(jLabel13);
-        jLabel13.setBounds(53, 216, 57, 25);
+        jLabel13.setBounds(53, 216, 55, 25);
 
         airplaneCapacity.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneCapacity);
@@ -1351,7 +1383,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel14.setText("Max Capacity:");
         jPanel3.add(jLabel14);
-        jLabel14.setBounds(53, 276, 114, 25);
+        jLabel14.setBounds(53, 276, 109, 25);
 
         airplaneAirline.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneAirline);
@@ -1806,6 +1838,10 @@ public class AirportFrame extends javax.swing.JFrame {
     private void firstNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_firstNameFieldActionPerformed
+
+    private void PLANEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PLANEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PLANEActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

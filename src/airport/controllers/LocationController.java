@@ -90,5 +90,14 @@ public class LocationController {
         clones.sort(Comparator.comparing(Location::getAirportId));
         return new Response("Locations tab updated succesfully", Status.OK, clones);
     }
+    public static ArrayList<String> refreshPlaneCombo(){
+        Storage storage = Storage.getInstance();
+        ArrayList<Location> locations = storage.getLocations();
+        ArrayList<String> ids = new ArrayList<>();
+        for(Location l : locations){
+            ids.add(l.getAirportId());
+        }
+        return ids;
+    }
 
 }

@@ -4,6 +4,7 @@
  */
 package main;
 
+import airport.model.DataLoader;
 import airport.view.AirportFrame;
 import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.UIManager;
@@ -14,6 +15,12 @@ import javax.swing.UIManager;
  */
 public class Main {
     public static void main(String args[]) {
+        
+        DataLoader.loadPlanes("json/planes.json");
+        DataLoader.loadLocations("json/locations.json");
+        DataLoader.loadPassengers("json/passengers.json");
+        DataLoader.loadFlights("json/flights.json");
+        
         System.setProperty("flatlaf.useNativeLibrary", "false");
 
         try {
@@ -27,5 +34,6 @@ public class Main {
                 new AirportFrame().setVisible(true);
             }
         });
+        
     }
 }
