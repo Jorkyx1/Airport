@@ -63,9 +63,9 @@ public class AirportFrame extends javax.swing.JFrame {
     private void blockPanels() {
         //9, 11
         for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
-            if (i != 9 && i != 11) {
-                jTabbedPane1.setEnabledAt(i, false);
-            }
+            
+           jTabbedPane1.setEnabledAt(i, false);
+            
         }
     }
 
@@ -117,6 +117,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void updateFlightCombo(ArrayList<String> ids){
         for(String id : ids){
             FLIGHT.addItem(id);
+            delayId.addItem(id);
         }
     }
     private void updatePassenngerCombo(ArrayList<String> ids){
@@ -1703,6 +1704,9 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            delayId.setSelectedIndex(0);
+            delayHours.setSelectedIndex(0);
+            delayMinutes.setSelectedIndex(0);
 
         }
 //        Flight flight = null;
