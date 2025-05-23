@@ -4,6 +4,7 @@
  */
 package airport.model;
 
+import airport.model.storage.Storage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

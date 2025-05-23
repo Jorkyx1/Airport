@@ -9,17 +9,14 @@ import airport.controllers.LocationController;
 import airport.controllers.PassengerController;
 import airport.controllers.PlaneController;
 import airport.controllers.utils.Response;
+import airport.model.Calculations.StandardPassengerFormatter;
 import airport.model.Flight;
 import airport.model.Location;
 import airport.model.Passenger;
 import airport.model.Plane;
-import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -782,6 +779,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel36.setText("ID:");
 
         updateId.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        updateId.setEnabled(false);
 
         jLabel37.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel37.setText("First Name:");
@@ -1758,7 +1756,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Passenger> passengers = (ArrayList<Passenger>) response.getObject();
             for (Passenger passenger : passengers) {
-                model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.generateFullPhone(), passenger.getCountry(), passenger.getNumFlights()});
+                model.addRow(new Object[]{passenger.getId(), StandardPassengerFormatter.getFullname(passenger), passenger.getBirthDate(), StandardPassengerFormatter.calculateAge(passenger), StandardPassengerFormatter.getFormattedPhone(passenger), passenger.getCountry(), passenger.getNumFlights()});
             }
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }

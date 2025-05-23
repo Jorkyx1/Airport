@@ -7,7 +7,7 @@ package airport.controllers;
 import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Plane;
-import airport.model.Storage;
+import airport.model.storage.Storage;
 import airport.view.AirportFrame;
 import java.util.ArrayList;
 import java.util.Comparator;

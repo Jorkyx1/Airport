@@ -8,7 +8,7 @@ import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Flight;
 import airport.model.Passenger;
-import airport.model.Storage;
+import airport.model.storage.Storage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;

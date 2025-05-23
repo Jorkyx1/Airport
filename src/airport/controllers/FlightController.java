@@ -10,7 +10,7 @@ import airport.model.Flight;
 import airport.model.Location;
 import airport.model.Passenger;
 import airport.model.Plane;
-import airport.model.Storage;
+import airport.model.storage.Storage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
