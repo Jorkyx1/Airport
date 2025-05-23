@@ -74,12 +74,12 @@ public class PlaneController {
         clones.sort(Comparator.comparing(Plane::getId));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
-    
-    public static ArrayList<String> refreshPlaneCombo(){
+
+    public static ArrayList<String> refreshPlaneCombo() {
         Storage storage = Storage.getInstance();
         ArrayList<Plane> planes = storage.getPlanes();
         ArrayList<String> ids = new ArrayList<>();
-        for(Plane p : planes){
+        for (Plane p : planes) {
             ids.add(p.getId());
         }
         return ids;

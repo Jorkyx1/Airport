@@ -110,19 +110,20 @@ public class FlightController {
                 if (hoursDurationsScaleint == 0 && minutesDurationScaleint == 0) {
                     return new Response("Scale duration must be greater than 0", Status.BAD_REQUEST);
                 }
-
+                Flight flight = new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt, hoursDurationsScaleint, minutesDurationScaleint);
                 // Create flight with scale
-                if (!storage.addFlight(new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt, hoursDurationsScaleint, minutesDurationScaleint))) {
+                if (!storage.addFlight(flight)) {
                     return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
                 }
-
+                plane.addFlight(flight);
             } else {
+                Flight flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt);
                 // Create flight without scale
-                if (!storage.addFlight(new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt))) {
+                if (!storage.addFlight(flight)) {
                     return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
                 }
+                plane.addFlight(flight);
             }
-
             return new Response("Flight created successfully", Status.CREATED);
 
         } catch (Exception ex) {
@@ -209,12 +210,12 @@ public class FlightController {
         clones.sort(Comparator.comparing(Flight::getDepartureDate));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
-    
-    public static ArrayList<String> refreshFlightCombo(){
+
+    public static ArrayList<String> refreshFlightCombo() {
         Storage storage = Storage.getInstance();
         ArrayList<Flight> flights = storage.getFlights();
         ArrayList<String> ids = new ArrayList<>();
-        for(Flight f : flights){
+        for (Flight f : flights) {
             ids.add(f.getId());
         }
         return ids;

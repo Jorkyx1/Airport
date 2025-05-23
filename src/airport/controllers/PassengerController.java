@@ -240,13 +240,13 @@ public class PassengerController {
         clones.sort(Comparator.comparing(Flight::getDepartureDate));
         return new Response("User flights tab updated succesfully", Status.OK, clones);
     }
-    
-    public static ArrayList<String> refreshPassengerCombo(){
+
+    public static ArrayList<String> refreshPassengerCombo() {
         Storage storage = Storage.getInstance();
         ArrayList<Passenger> passengers = storage.getPassengers();
         ArrayList<String> ids = new ArrayList<>();
-        for(Passenger p : passengers){
-            ids.add(p.getId()+"");
+        for (Passenger p : passengers) {
+            ids.add(p.getId() + "");
         }
         return ids;
     }

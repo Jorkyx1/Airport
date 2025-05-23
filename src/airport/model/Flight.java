@@ -4,6 +4,8 @@
  */
 package airport.model;
 
+import airport.model.Calculations.StandardFlightArrivalCalculator;
+import airport.model.utils.ArrivalTimeCalculator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -12,6 +14,8 @@ import java.util.ArrayList;
  * @author edangulo
  */
 public class Flight implements Cloneable {
+
+    private ArrivalTimeCalculator calc;
 
     private final String id;
     private ArrayList<Passenger> passengers;
@@ -34,8 +38,8 @@ public class Flight implements Cloneable {
         this.departureDate = departureDate;
         this.hoursDurationArrival = hoursDurationArrival;
         this.minutesDurationArrival = minutesDurationArrival;
+        this.calc = new StandardFlightArrivalCalculator();
 
-        this.plane.addFlight(this);
     }
 
     public Flight(String id, Plane plane, Location departureLocation, Location scaleLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
@@ -50,8 +54,8 @@ public class Flight implements Cloneable {
         this.minutesDurationArrival = minutesDurationArrival;
         this.hoursDurationScale = hoursDurationScale;
         this.minutesDurationScale = minutesDurationScale;
+        this.calc = new StandardFlightArrivalCalculator();
 
-        this.plane.addFlight(this);
     }
 
     @Override
@@ -111,8 +115,12 @@ public class Flight implements Cloneable {
         this.departureDate = departureDate;
     }
 
+    public void setArrivalTimeCalculator(ArrivalTimeCalculator calc) {
+        this.calc = calc;
+    }
+
     public LocalDateTime calculateArrivalDate() {
-        return departureDate.plusHours(hoursDurationScale).plusHours(hoursDurationArrival).plusMinutes(minutesDurationScale).plusMinutes(minutesDurationArrival);
+        return calc.calculateArrivalDate(this);
     }
 
     public void delay(int hours, int minutes) {
