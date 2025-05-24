@@ -5,6 +5,7 @@
 package airport.model.Calculations;
 
 import airport.model.Passenger;
+import airport.model.utils.PassengerFormatter;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -12,17 +13,20 @@ import java.time.Period;
  *
  * @author USUARIO
  */
-public class StandardPassengerFormatter{
+public class StandardPassengerFormatter implements PassengerFormatter{
 
-    public static String getFullname(Passenger p) {
+    @Override
+    public String getFullname(Passenger p) {
         return p.getFirstname() + " " + p.getLastname();
     }
 
-    public static String getFormattedPhone(Passenger p) {
+    @Override
+    public String getFormattedPhone(Passenger p) {
         return "+" + p.getCountryPhoneCode() + " " + p.getPhone();
     }
 
-    public static int calculateAge(Passenger p) {
+    @Override
+    public int calculateAge(Passenger p) {
         return Period.between(p.getBirthDate(), LocalDate.now()).getYears();
     }
     

@@ -1756,7 +1756,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Passenger> passengers = (ArrayList<Passenger>) response.getObject();
             for (Passenger passenger : passengers) {
-                model.addRow(new Object[]{passenger.getId(), StandardPassengerFormatter.getFullname(passenger), passenger.getBirthDate(), StandardPassengerFormatter.calculateAge(passenger), StandardPassengerFormatter.getFormattedPhone(passenger), passenger.getCountry(), passenger.getNumFlights()});
+                    model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.getFormattedPhone(), passenger.getCountry(), passenger.getNumFlights()});
             }
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }

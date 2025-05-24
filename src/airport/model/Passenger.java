@@ -4,6 +4,8 @@
  */
 package airport.model;
 
+import airport.model.Calculations.StandardPassengerFormatter;
+import airport.model.utils.PassengerFormatter;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Passenger implements Cloneable{
     
+    private PassengerFormatter format;
     private final long id;
     private String firstname;
     private String lastname;
@@ -32,6 +35,7 @@ public class Passenger implements Cloneable{
         this.phone = phone;
         this.country = country;
         this.flights = new ArrayList<>();
+        this.format = new StandardPassengerFormatter();
     }
 
     @Override
@@ -106,6 +110,17 @@ public class Passenger implements Cloneable{
         return flights.size();
     }
     
+    public String getFullname() {
+        return format.getFullname(this);
+    }
+
+    public String getFormattedPhone() {
+        return format.getFormattedPhone(this);
+    }
+
+    public int calculateAge() {
+        return format.calculateAge(this);
+    }
      
     
 }
