@@ -16,7 +16,6 @@ import airport.model.storage.StoragePassenger;
 import airport.model.storage.StoragePlane;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  *
@@ -128,6 +127,7 @@ public class FlightController {
                     return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
                 }
                 plane.addFlight(flight);
+                storageP.notifyObservers();
             }
             return new Response("Flight created successfully", Status.CREATED);
 
