@@ -48,6 +48,11 @@ public class StorageFlight extends Observable {
         }
         return null;
     }
+    
+    public void updateFlight(Flight flight , int hours, int minutes){
+        flight.delay(hours, minutes);
+        notifyObservers();
+    }
 
     public ArrayList<Flight> getFlights() {
         return flights;

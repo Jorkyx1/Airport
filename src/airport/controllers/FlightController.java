@@ -201,7 +201,7 @@ public class FlightController {
         if (hoursInt == 0 && minutesInt == 0) {
             return new Response("Flight delay must be greater than zero", Status.BAD_REQUEST);
         }
-        flight.delay(hoursInt, minutesInt);
+        storage.updateFlight(flight, hoursInt, minutesInt);
         return new Response("Delay added succesfully", Status.OK);
     }
 

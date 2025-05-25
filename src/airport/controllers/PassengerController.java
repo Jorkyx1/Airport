@@ -190,12 +190,14 @@ public class PassengerController {
             } catch (NumberFormatException ex) {
                 return new Response("Phone must be numeric", Status.BAD_REQUEST);
             }
-            passenger.setFirstname(firstname);
-            passenger.setLastname(lastname);
-            passenger.setBirthDate(birthDate);
-            passenger.setCountry(country);
-            passenger.setPhone(phoneLong);
-            passenger.setCountryPhoneCode(phoneCodeInt);
+            Passenger passengerUpdated = new Passenger(idLong, firstname, lastname, birthDate, phoneCodeInt, phoneLong, country);
+            storage.updatePassenger(passengerUpdated);
+//            passenger.setFirstname(firstname);
+//            passenger.setLastname(lastname);
+//            passenger.setBirthDate(birthDate);
+//            passenger.setCountry(country);
+//            passenger.setPhone(phoneLong);
+//            passenger.setCountryPhoneCode(phoneCodeInt);
 
             return new Response("Passenger data updated successfully", Status.OK);
         } catch (Exception ex) {
@@ -250,5 +252,5 @@ public class PassengerController {
         }
         return ids;
     }
-    
+
 }

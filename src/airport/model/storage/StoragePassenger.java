@@ -40,6 +40,18 @@ public class StoragePassenger extends Observable {
         return true;
     }
 
+    public boolean updatePassenger(Passenger passenger) {
+        Long passengerId = passenger.getId();
+        for (int i = 0; i < passengers.size(); i++) {
+            if (passengerId.equals(passengers.get(i).getId())) {
+                passengers.set(i, passenger);
+                notifyObservers();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Passenger getPassenger(long id) {
         for (Passenger p : this.passengers) {
             if (p.getId() == id) {
