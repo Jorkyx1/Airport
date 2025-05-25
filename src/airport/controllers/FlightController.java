@@ -209,7 +209,7 @@ public class FlightController {
         StorageFlight storage = StorageFlight.getInstance();
         ArrayList<Flight> flights = storage.getFlightsSorted();
         if (flights.isEmpty()) {
-            return new Response("No planes found", Status.NOT_FOUND);
+            return new Response("No planes found", Status.NO_CONTENT);
         }
         ArrayList<Flight> clones = new ArrayList<>();
         for (Flight f : flights) {

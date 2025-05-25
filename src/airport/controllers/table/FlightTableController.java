@@ -50,7 +50,7 @@ public class FlightTableController {
 
             Passenger passenger = StoragePassenger.getInstance().getPassenger(passengerId);
             if (passenger == null) {
-                return new Response("Passenger not found", Status.NO_CONTENT);
+                return new Response("Passenger not found", Status.NOT_FOUND);
             }
             ArrayList<Flight> flights = passenger.getFlights();
             if (flights == null) {

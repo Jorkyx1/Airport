@@ -50,7 +50,7 @@ public class AirportFrame extends javax.swing.JFrame {
         this.generateMinutes();
         this.blockPanels();
         this.updatePlaneCombo(PlaneController.refreshPlaneCombo());
-        this.updateLocationCombo(LocationController.refreshPlaneCombo());
+        this.updateLocationCombo(LocationController.refreshLocationCombo());
         this.updateFlightCombo(FlightController.refreshFlightCombo());
         this.updatePassenngerCombo(PassengerController.refreshPassengerCombo());
 

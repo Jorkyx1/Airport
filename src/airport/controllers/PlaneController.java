@@ -64,7 +64,7 @@ public class PlaneController {
         StoragePlane storage = StoragePlane.getInstance();
         ArrayList<Plane> planes = storage.getPlanesSorted();
         if (planes.isEmpty()) {
-            return new Response("No planes found", Status.NOT_FOUND);
+            return new Response("No planes found", Status.NO_CONTENT);
         }
         ArrayList<Plane> clones = new ArrayList<>();
         for (Plane p : planes) {

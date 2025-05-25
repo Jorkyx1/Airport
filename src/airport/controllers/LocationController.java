@@ -81,7 +81,7 @@ public class LocationController {
         StorageLocation storage = StorageLocation.getInstance();
         ArrayList<Location> locations = storage.getLocationsSorted();
         if (locations.isEmpty()) {
-            return new Response("No locations found", Status.NOT_FOUND);
+            return new Response("No locations found", Status.NO_CONTENT);
         }
         ArrayList<Location> clones = new ArrayList<>();
         for (Location l : locations) {
@@ -89,7 +89,7 @@ public class LocationController {
         }
         return new Response("Locations tab updated succesfully", Status.OK, clones);
     }
-    public static ArrayList<String> refreshPlaneCombo(){
+    public static ArrayList<String> refreshLocationCombo(){
         StorageLocation storage = StorageLocation.getInstance();
         ArrayList<Location> locations = storage.getLocations();
         ArrayList<String> ids = new ArrayList<>();

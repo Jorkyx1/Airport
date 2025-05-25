@@ -209,7 +209,7 @@ public class PassengerController {
         StoragePassenger storage = StoragePassenger.getInstance();
         ArrayList<Passenger> passengers = storage.getPassengers();
         if (passengers.isEmpty()) {
-            return new Response("No passengers found", Status.NOT_FOUND);
+            return new Response("No passengers found", Status.NO_CONTENT);
         }
         ArrayList<Passenger> clones = new ArrayList<>();
         for (Passenger p : passengers) {
@@ -233,7 +233,7 @@ public class PassengerController {
         }
         ArrayList<Flight> flights = passenger.getFlights();
         if (flights.isEmpty()) {
-            return new Response("This users does not have flights", Status.NOT_FOUND);
+            return new Response("This users does not have flights", Status.NO_CONTENT);
         }
         ArrayList<Flight> clones = new ArrayList<>();
         for (Flight f : flights) {
