@@ -79,7 +79,7 @@ public class LocationController {
 
     public static Response showAllAirports() {
         StorageLocation storage = StorageLocation.getInstance();
-        ArrayList<Location> locations = storage.getLocations();
+        ArrayList<Location> locations = storage.getLocationsSorted();
         if (locations.isEmpty()) {
             return new Response("No locations found", Status.NOT_FOUND);
         }
@@ -87,7 +87,6 @@ public class LocationController {
         for (Location l : locations) {
             clones.add(l.clone());
         }
-        clones.sort(Comparator.comparing(Location::getAirportId));
         return new Response("Locations tab updated succesfully", Status.OK, clones);
     }
     public static ArrayList<String> refreshPlaneCombo(){

@@ -6,16 +6,18 @@ package airport.model.storage;
 
 import airport.model.Location;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
  * @author USUARIO
  */
-public class StorageLocation extends Observable{
+public class StorageLocation extends Observable {
+
     private static StorageLocation instance;
 
     private ArrayList<Location> locations;
-    
+
     private StorageLocation() {
         this.locations = new ArrayList<>();
     }
@@ -26,7 +28,7 @@ public class StorageLocation extends Observable{
         }
         return instance;
     }
-    
+
     public boolean addLocation(Location location) {
         for (Location p : this.locations) {
             if (p.getAirportId().equals(location.getAirportId())) {
@@ -34,9 +36,10 @@ public class StorageLocation extends Observable{
             }
         }
         this.locations.add(location);
+        notifyObservers();
         return true;
     }
-    
+
     public Location getAirport(String id) {
         for (Location l : this.locations) {
             if (l.getAirportId().equals(id)) {
@@ -45,8 +48,17 @@ public class StorageLocation extends Observable{
         }
         return null;
     }
-    
+
     public ArrayList<Location> getLocations() {
         return locations;
+    }
+
+    public ArrayList<Location> getLocationsSorted() {
+        ArrayList<Location> locationSorted = new ArrayList<>();
+        for (Location l : locations) {
+            locationSorted.add(l.clone());
+        }
+        locationSorted.sort(Comparator.comparing(Location::getAirportId));
+        return locationSorted;
     }
 }

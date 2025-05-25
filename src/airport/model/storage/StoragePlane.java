@@ -6,6 +6,7 @@ package airport.model.storage;
 
 import airport.model.Plane;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  *
@@ -34,6 +35,7 @@ public class StoragePlane extends Observable{
             }
         }
         this.planes.add(plane);
+        notifyObservers();
         return true;
     }
     
@@ -48,5 +50,14 @@ public class StoragePlane extends Observable{
     
     public ArrayList<Plane> getPlanes() {
         return planes;
+    }
+    
+    public ArrayList<Plane> getPlanesSorted() {
+        ArrayList<Plane> planesSorted = new ArrayList<>();
+        for (Plane l : planes) {
+            planesSorted.add(l.clone());
+        }
+        planesSorted.sort(Comparator.comparing(Plane::getId));
+        return planesSorted;
     }
 }

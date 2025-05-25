@@ -207,7 +207,7 @@ public class FlightController {
 
     public static Response showAllFlights() {
         StorageFlight storage = StorageFlight.getInstance();
-        ArrayList<Flight> flights = storage.getFlights();
+        ArrayList<Flight> flights = storage.getFlightsSorted();
         if (flights.isEmpty()) {
             return new Response("No planes found", Status.NOT_FOUND);
         }
@@ -215,7 +215,6 @@ public class FlightController {
         for (Flight f : flights) {
             clones.add(f.clone());
         }
-        clones.sort(Comparator.comparing(Flight::getDepartureDate));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
 

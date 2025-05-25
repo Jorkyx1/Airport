@@ -8,11 +8,20 @@ import airport.controllers.FlightController;
 import airport.controllers.LocationController;
 import airport.controllers.PassengerController;
 import airport.controllers.PlaneController;
+import airport.controllers.table.FlightTableController;
+import airport.controllers.table.LocationTableController;
+import airport.controllers.table.PassengerTableController;
+import airport.controllers.table.PlaneTableController;
+import airport.controllers.table.TableObserverController;
 import airport.controllers.utils.Response;
 import airport.model.Flight;
 import airport.model.Location;
 import airport.model.Passenger;
 import airport.model.Plane;
+import airport.model.storage.StorageFlight;
+import airport.model.storage.StorageLocation;
+import airport.model.storage.StoragePassenger;
+import airport.model.storage.StoragePlane;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -45,6 +54,30 @@ public class AirportFrame extends javax.swing.JFrame {
         this.updateFlightCombo(FlightController.refreshFlightCombo());
         this.updatePassenngerCombo(PassengerController.refreshPassengerCombo());
 
+        TableObserverController locationObserver = new TableObserverController(() -> {
+            LocationTableController.updateLocationTable((DefaultTableModel) locationsTable.getModel());
+        });
+        StorageLocation.getInstance().addObserver(locationObserver);
+
+        TableObserverController PassengerObserver = new TableObserverController(() -> {
+            PassengerTableController.updatePassengerTable((DefaultTableModel) passengersTable.getModel());
+        });
+        StoragePassenger.getInstance().addObserver(PassengerObserver);
+
+        TableObserverController FlightObserver = new TableObserverController(() -> {
+            FlightTableController.updateFlightTable((DefaultTableModel) flightsTable.getModel());
+        });
+        StorageFlight.getInstance().addObserver(FlightObserver);
+
+        TableObserverController PlaneObserver = new TableObserverController(() -> {
+            PlaneTableController.updatePlaneTable((DefaultTableModel) planesTable.getModel());
+        });
+        StoragePlane.getInstance().addObserver(PlaneObserver);
+
+        TableObserverController myFlightsObserver = new TableObserverController(() -> {
+            FlightTableController.updateMyFlightsTable(userSelect.getSelectedItem().toString(), (DefaultTableModel) showMyFlightsTable.getModel());
+        });
+        StorageFlight.getInstance().addObserver(myFlightsObserver);
     }
 
     private void blockPanels() {
@@ -226,23 +259,23 @@ public class AirportFrame extends javax.swing.JFrame {
         addToFlightButton = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        showMyFlightsTable = new javax.swing.JTable();
         showMyFlightsButton = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        passengersTable = new javax.swing.JTable();
         refreshPassengersButton = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        flightsTable = new javax.swing.JTable();
         showAllFlightsButton = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         showPlanesButton = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        planesTable = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        locationsTable = new javax.swing.JTable();
         showLocationsButton = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         delayHours = new javax.swing.JComboBox<>();
@@ -967,8 +1000,8 @@ public class AirportFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Add to flight", jPanel6);
 
-        jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        showMyFlightsTable.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        showMyFlightsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -994,7 +1027,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(showMyFlightsTable);
 
         showMyFlightsButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         showMyFlightsButton.setText("Refresh");
@@ -1029,8 +1062,8 @@ public class AirportFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Show my flights", jPanel7);
 
-        jTable2.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        passengersTable.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        passengersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -1053,7 +1086,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(passengersTable);
 
         refreshPassengersButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         refreshPassengersButton.setText("Refresh");
@@ -1089,8 +1122,8 @@ public class AirportFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Show all passengers", jPanel8);
 
-        jTable3.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        flightsTable.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        flightsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -1113,7 +1146,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(flightsTable);
 
         showAllFlightsButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         showAllFlightsButton.setText("Refresh");
@@ -1157,7 +1190,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         });
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        planesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -1180,7 +1213,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(planesTable);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -1208,7 +1241,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Show all planes", jPanel10);
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        locationsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -1231,7 +1264,7 @@ public class AirportFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(locationsTable);
 
         showLocationsButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         showLocationsButton.setText("Refresh");
@@ -1354,7 +1387,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel12.setText("Brand:");
         jPanel3.add(jLabel12);
-        jLabel12.setBounds(53, 157, 50, 25);
+        jLabel12.setBounds(53, 157, 52, 25);
 
         airplaneBrand.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneBrand);
@@ -1367,7 +1400,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel13.setText("Model:");
         jPanel3.add(jLabel13);
-        jLabel13.setBounds(53, 216, 55, 25);
+        jLabel13.setBounds(53, 216, 57, 25);
 
         airplaneCapacity.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneCapacity);
@@ -1376,7 +1409,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel14.setText("Max Capacity:");
         jPanel3.add(jLabel14);
-        jLabel14.setBounds(53, 276, 109, 25);
+        jLabel14.setBounds(53, 276, 114, 25);
 
         airplaneAirline.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jPanel3.add(airplaneAirline);
@@ -1714,7 +1747,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void showMyFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showMyFlightsButtonActionPerformed
         // TODO add your handling code here:
         String passengerId = userSelect.getItemAt(userSelect.getSelectedIndex());
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) showMyFlightsTable.getModel();
         model.setRowCount(0);
         Response response = PassengerController.showPassengerFlights(passengerId);
         if (response.getStatus() >= 500) {
@@ -1740,7 +1773,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void refreshPassengersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPassengersButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) passengersTable.getModel();
         model.setRowCount(0);
         Response response = PassengerController.showAllPassengers();
         if (response.getStatus() >= 500) {
@@ -1759,7 +1792,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void showAllFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllFlightsButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        DefaultTableModel model = (DefaultTableModel) flightsTable.getModel();
         model.setRowCount(0);
         Response response = FlightController.showAllFlights();
         if (response.getStatus() >= 500) {
@@ -1777,7 +1810,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void showPlanesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPlanesButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        DefaultTableModel model = (DefaultTableModel) planesTable.getModel();
         model.setRowCount(0);
         Response response = PlaneController.showAllPlanes();
         if (response.getStatus() >= 500) {
@@ -1796,7 +1829,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void showLocationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLocationsButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+        DefaultTableModel model = (DefaultTableModel) locationsTable.getModel();
         model.setRowCount(0);
         Response response = LocationController.showAllAirports();
         if (response.getStatus() >= 500) {
@@ -1880,6 +1913,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JButton exitButton;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JTextField flightIdField;
+    private javax.swing.JTable flightsTable;
     private javax.swing.JComboBox<String> hourDuration1;
     private javax.swing.JComboBox<String> hourDuration2;
     private javax.swing.JTextField idField;
@@ -1950,19 +1984,17 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
     private javax.swing.JTextField jTextField28;
     private javax.swing.JTextField lastNameField;
+    private javax.swing.JTable locationsTable;
     private javax.swing.JComboBox<String> minuteDuration1;
     private javax.swing.JComboBox<String> minuteDuration2;
     private airport.PanelRound panelRound1;
     private airport.PanelRound panelRound2;
     private airport.PanelRound panelRound3;
+    private javax.swing.JTable passengersTable;
     private javax.swing.JTextField phoneField;
+    private javax.swing.JTable planesTable;
     private javax.swing.JTextField prefixField;
     private javax.swing.JButton refreshPassengersButton;
     private javax.swing.JButton registerPassengerButton;
@@ -1970,6 +2002,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JButton showAllFlightsButton;
     private javax.swing.JButton showLocationsButton;
     private javax.swing.JButton showMyFlightsButton;
+    private javax.swing.JTable showMyFlightsTable;
     private javax.swing.JButton showPlanesButton;
     private javax.swing.JButton updateButton;
     private javax.swing.JTextField updateCountry;

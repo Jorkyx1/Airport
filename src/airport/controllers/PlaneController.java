@@ -62,7 +62,7 @@ public class PlaneController {
 
     public static Response showAllPlanes() {
         StoragePlane storage = StoragePlane.getInstance();
-        ArrayList<Plane> planes = storage.getPlanes();
+        ArrayList<Plane> planes = storage.getPlanesSorted();
         if (planes.isEmpty()) {
             return new Response("No planes found", Status.NOT_FOUND);
         }
@@ -70,7 +70,6 @@ public class PlaneController {
         for (Plane p : planes) {
             clones.add(p.clone());
         }
-        clones.sort(Comparator.comparing(Plane::getId));
         return new Response("Planes tab updated succesfully", Status.OK, clones);
     }
 
