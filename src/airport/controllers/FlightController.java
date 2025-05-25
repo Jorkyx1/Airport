@@ -10,7 +10,10 @@ import airport.model.Flight;
 import airport.model.Location;
 import airport.model.Passenger;
 import airport.model.Plane;
-import airport.model.storage.Storage;
+import airport.model.storage.StorageFlight;
+import airport.model.storage.StorageLocation;
+import airport.model.storage.StoragePassenger;
+import airport.model.storage.StoragePlane;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,7 +25,9 @@ import java.util.Comparator;
 public class FlightController {
 
     public static Response createFlight(String id, String planeId, String departureLocationId, String arrivalLocationId, String scaleLocationId, String year, String month, String day, String hour, String minutes, String hoursDurationsArrival, String minutesDurationsArrival, String hoursDurationsScale, String minutesDurationsScale) {
-        Storage storage = Storage.getInstance();
+        StorageFlight storageF = StorageFlight.getInstance();
+        StoragePlane storageP = StoragePlane.getInstance();
+        StorageLocation storageL = StorageLocation.getInstance();
 
         int hoursDurationArrivalInt, minutesDurationArrivalInt;
         int hoursDurationsScaleint, minutesDurationScaleint;
@@ -45,23 +50,23 @@ public class FlightController {
             }
 
             Plane plane;
-            if (storage.getPlane(planeId) == null) {
+            if (storageP.getPlane(planeId) == null) {
                 return new Response("Plane does not exist", Status.BAD_REQUEST);
             } else {
-                plane = storage.getPlane(planeId);
+                plane = storageP.getPlane(planeId);
             }
 
             Location departureLocation, arrivalLocation, scaleLocation;
-            if (storage.getAirport(departureLocationId) == null) {
+            if (storageL.getAirport(departureLocationId) == null) {
                 return new Response("Departure location id does not exist", Status.BAD_REQUEST);
             } else {
-                departureLocation = storage.getAirport(departureLocationId);
+                departureLocation = storageL.getAirport(departureLocationId);
             }
 
-            if (storage.getAirport(arrivalLocationId) == null) {
+            if (storageL.getAirport(arrivalLocationId) == null) {
                 return new Response("Arrival location id does not exist", Status.BAD_REQUEST);
             } else {
-                arrivalLocation = storage.getAirport(arrivalLocationId);
+                arrivalLocation = storageL.getAirport(arrivalLocationId);
             }
 
             try {
@@ -94,10 +99,10 @@ public class FlightController {
 
             if (hasScale) {
                 // Validate scale location
-                if (storage.getAirport(scaleLocationId) == null) {
+                if (storageL.getAirport(scaleLocationId) == null) {
                     return new Response("Scale location does not exist", Status.BAD_REQUEST);
                 } else {
-                    scaleLocation = storage.getAirport(scaleLocationId);
+                    scaleLocation = storageL.getAirport(scaleLocationId);
                 }
 
                 // Validate scale duration
@@ -112,14 +117,14 @@ public class FlightController {
                 }
                 Flight flight = new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt, hoursDurationsScaleint, minutesDurationScaleint);
                 // Create flight with scale
-                if (!storage.addFlight(flight)) {
+                if (!storageF.addFlight(flight)) {
                     return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
                 }
                 plane.addFlight(flight);
             } else {
                 Flight flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrivalInt, minutesDurationArrivalInt);
                 // Create flight without scale
-                if (!storage.addFlight(flight)) {
+                if (!storageF.addFlight(flight)) {
                     return new Response("Flight with this ID already exists", Status.BAD_REQUEST);
                 }
                 plane.addFlight(flight);
@@ -148,9 +153,10 @@ public class FlightController {
             if (flightId.equals("Flight")) {
                 return new Response("You must select a flight Id", Status.BAD_REQUEST);
             }
-            Storage storage = Storage.getInstance();
-            Passenger passenger = storage.getPassenger(passengerIdLong);
-            Flight flight = storage.getFlight(flightId);
+            StorageFlight storageF = StorageFlight.getInstance();
+            StoragePassenger storageP = StoragePassenger.getInstance();
+            Passenger passenger = storageP.getPassenger(passengerIdLong);
+            Flight flight = storageF.getFlight(flightId);
             if (passenger == null) {
                 return new Response("Passenger not found", Status.NOT_FOUND);
             }
@@ -163,7 +169,8 @@ public class FlightController {
             }
             passenger.addFlight(flight);
             flight.addPassenger(passenger);
-            storage.notifyObservers();
+            storageF.notifyObservers();
+            storageP.notifyObservers();
 
             return new Response("Passenger added to flight successfully", Status.OK);
 
@@ -186,7 +193,7 @@ public class FlightController {
         } catch (NumberFormatException ex) {
             return new Response("Hours and minutes must be numeric", Status.BAD_REQUEST);
         }
-        Storage storage = Storage.getInstance();
+        StorageFlight storage = StorageFlight.getInstance();
         flight = storage.getFlight(flightId);
         if (flight == null) {
             return new Response("Flight does not exist", Status.BAD_REQUEST);
@@ -199,7 +206,7 @@ public class FlightController {
     }
 
     public static Response showAllFlights() {
-        Storage storage = Storage.getInstance();
+        StorageFlight storage = StorageFlight.getInstance();
         ArrayList<Flight> flights = storage.getFlights();
         if (flights.isEmpty()) {
             return new Response("No planes found", Status.NOT_FOUND);
@@ -213,7 +220,7 @@ public class FlightController {
     }
 
     public static ArrayList<String> refreshFlightCombo() {
-        Storage storage = Storage.getInstance();
+        StorageFlight storage = StorageFlight.getInstance();
         ArrayList<Flight> flights = storage.getFlights();
         ArrayList<String> ids = new ArrayList<>();
         for (Flight f : flights) {

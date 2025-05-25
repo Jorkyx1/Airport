@@ -7,7 +7,7 @@ package airport.controllers;
 import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Location;
-import airport.model.storage.Storage;
+import airport.model.storage.StorageLocation;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -67,7 +67,7 @@ public class LocationController {
             } catch (NumberFormatException ex) {
                 return new Response("Longitude must be numeric", Status.BAD_REQUEST);
             }
-            Storage storage = Storage.getInstance();
+            StorageLocation storage = StorageLocation.getInstance();
             if (!storage.addLocation(new Location(id, name, city, country, latitudeDouble, longitudeDouble))) {
                 return new Response("An airport with that id already exists", Status.BAD_REQUEST);
             }
@@ -78,7 +78,7 @@ public class LocationController {
     }
 
     public static Response showAllAirports() {
-        Storage storage = Storage.getInstance();
+        StorageLocation storage = StorageLocation.getInstance();
         ArrayList<Location> locations = storage.getLocations();
         if (locations.isEmpty()) {
             return new Response("No locations found", Status.NOT_FOUND);
@@ -91,7 +91,7 @@ public class LocationController {
         return new Response("Locations tab updated succesfully", Status.OK, clones);
     }
     public static ArrayList<String> refreshPlaneCombo(){
-        Storage storage = Storage.getInstance();
+        StorageLocation storage = StorageLocation.getInstance();
         ArrayList<Location> locations = storage.getLocations();
         ArrayList<String> ids = new ArrayList<>();
         for(Location l : locations){

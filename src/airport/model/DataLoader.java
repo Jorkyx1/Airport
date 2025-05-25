@@ -4,7 +4,10 @@
  */
 package airport.model;
 
-import airport.model.storage.Storage;
+import airport.model.storage.StorageFlight;
+import airport.model.storage.StorageLocation;
+import airport.model.storage.StoragePassenger;
+import airport.model.storage.StoragePlane;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +26,7 @@ public class DataLoader {
         try {
             String content = Files.readString(Paths.get(path));
             JSONArray jsonArray = new JSONArray(content);
-            Storage storage = Storage.getInstance();
+            StoragePlane storage = StoragePlane.getInstance();
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject planeJson = jsonArray.getJSONObject(i);
@@ -45,7 +48,7 @@ public class DataLoader {
       try{
           String content = Files.readString(Paths.get(path));
             JSONArray array = new JSONArray(content);
-            Storage storage = Storage.getInstance();
+            StorageLocation storage = StorageLocation.getInstance();
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject o = array.getJSONObject(i);
@@ -68,7 +71,7 @@ public class DataLoader {
       try{
             String content = Files.readString(Paths.get(path));
             JSONArray array = new JSONArray(content);
-            Storage storage = Storage.getInstance();
+            StoragePassenger storage = StoragePassenger.getInstance();
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject o = array.getJSONObject(i);
@@ -93,16 +96,18 @@ public class DataLoader {
         try{
             String content = Files.readString(Paths.get(path));
             JSONArray array = new JSONArray(content);
-            Storage storage = Storage.getInstance();
+            StorageFlight storageF = StorageFlight.getInstance();
+            StoragePlane storageP = StoragePlane.getInstance();
+            StorageLocation storageL = StorageLocation.getInstance();
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject o = array.getJSONObject(i);
 
                 String id = o.getString("id");
-                Plane plane = storage.getPlane(o.getString("plane"));
-                Location dep = storage.getAirport(o.getString("departureLocation"));
-                Location arr = storage.getAirport(o.getString("arrivalLocation"));
-                Location scale = o.isNull("scaleLocation") ? null : storage.getAirport(o.getString("scaleLocation"));
+                Plane plane = storageP.getPlane(o.getString("plane"));
+                Location dep = storageL.getAirport(o.getString("departureLocation"));
+                Location arr = storageL.getAirport(o.getString("arrivalLocation"));
+                Location scale = o.isNull("scaleLocation") ? null : storageL.getAirport(o.getString("scaleLocation"));
                 LocalDateTime departureDate = LocalDateTime.parse(o.getString("departureDate"));
 
                 int hArrival = o.getInt("hoursDurationArrival");
@@ -117,7 +122,7 @@ public class DataLoader {
                     f = new Flight(id, plane, dep, scale, arr, departureDate, hArrival, mArrival, hScale, mScale);
                 }
 
-                storage.addFlight(f);
+                storageF.addFlight(f);
             }
         }catch (IOException | JSONException e) {
             e.printStackTrace();

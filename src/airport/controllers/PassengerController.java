@@ -8,7 +8,7 @@ import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Flight;
 import airport.model.Passenger;
-import airport.model.storage.Storage;
+import airport.model.storage.StoragePassenger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -97,7 +97,7 @@ public class PassengerController {
             } catch (NumberFormatException ex) {
                 return new Response("Phone must be numeric", Status.BAD_REQUEST);
             }
-            Storage storage = Storage.getInstance();
+            StoragePassenger storage = StoragePassenger.getInstance();
             if (!storage.addPassenger(new Passenger(idLong, firstname, lastname, birthDate, phoneCodeInt, phoneLong, country))) {
                 return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
             }
@@ -123,7 +123,7 @@ public class PassengerController {
                 return new Response("Id must be numeric", Status.BAD_REQUEST);
             }
 
-            Storage storage = Storage.getInstance();
+            StoragePassenger storage = StoragePassenger.getInstance();
 
             Passenger passenger = storage.getPassenger(idLong);
             if (passenger == null) {
@@ -204,7 +204,7 @@ public class PassengerController {
     }
 
     public static Response showAllPassengers() {
-        Storage storage = Storage.getInstance();
+        StoragePassenger storage = StoragePassenger.getInstance();
         ArrayList<Passenger> passengers = storage.getPassengers();
         if (passengers.isEmpty()) {
             return new Response("No passengers found", Status.NOT_FOUND);
@@ -224,7 +224,7 @@ public class PassengerController {
         } catch (NumberFormatException ex) {
             return new Response("Select a valid passenger", Status.NOT_FOUND);
         }
-        Storage storage = Storage.getInstance();
+        StoragePassenger storage = StoragePassenger.getInstance();
         Passenger passenger = storage.getPassenger(passengerIdLong);
         if (passenger == null) {
             return new Response("Passenger not found", Status.NOT_FOUND);
@@ -242,7 +242,7 @@ public class PassengerController {
     }
 
     public static ArrayList<String> refreshPassengerCombo() {
-        Storage storage = Storage.getInstance();
+        StoragePassenger storage = StoragePassenger.getInstance();
         ArrayList<Passenger> passengers = storage.getPassengers();
         ArrayList<String> ids = new ArrayList<>();
         for (Passenger p : passengers) {

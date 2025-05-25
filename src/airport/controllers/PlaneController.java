@@ -7,8 +7,7 @@ package airport.controllers;
 import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.model.Plane;
-import airport.model.storage.Storage;
-import airport.view.AirportFrame;
+import airport.model.storage.StoragePlane;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -51,7 +50,7 @@ public class PlaneController {
             if (airline == null) {
                 return new Response("Airline must not be empty", Status.BAD_REQUEST);
             }
-            Storage storage = Storage.getInstance();
+            StoragePlane storage = StoragePlane.getInstance();
             if (!storage.addPlane(new Plane(id, brand, model, maxCapacityint, airline))) {
                 return new Response("An airplane with that id already exists", Status.BAD_REQUEST);
             }
@@ -62,7 +61,7 @@ public class PlaneController {
     }
 
     public static Response showAllPlanes() {
-        Storage storage = Storage.getInstance();
+        StoragePlane storage = StoragePlane.getInstance();
         ArrayList<Plane> planes = storage.getPlanes();
         if (planes.isEmpty()) {
             return new Response("No planes found", Status.NOT_FOUND);
@@ -76,7 +75,7 @@ public class PlaneController {
     }
 
     public static ArrayList<String> refreshPlaneCombo() {
-        Storage storage = Storage.getInstance();
+        StoragePlane storage = StoragePlane.getInstance();
         ArrayList<Plane> planes = storage.getPlanes();
         ArrayList<String> ids = new ArrayList<>();
         for (Plane p : planes) {
