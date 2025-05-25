@@ -29,18 +29,9 @@ public class AirportFrame extends javax.swing.JFrame {
      * Creates new form AirportFrame
      */
     private int x, y;
-    private ArrayList<Passenger> passengers;
-    private ArrayList<Plane> planes;
-    private ArrayList<Location> locations;
-    private ArrayList<Flight> flights;
 
     public AirportFrame() {
         initComponents();
-
-        this.passengers = new ArrayList<>();
-        this.planes = new ArrayList<>();
-        this.locations = new ArrayList<>();
-        this.flights = new ArrayList<>();
 
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
@@ -54,15 +45,15 @@ public class AirportFrame extends javax.swing.JFrame {
         this.updateLocationCombo(LocationController.refreshPlaneCombo());
         this.updateFlightCombo(FlightController.refreshFlightCombo());
         this.updatePassenngerCombo(PassengerController.refreshPassengerCombo());
-        
+
     }
 
     private void blockPanels() {
         //9, 11
         for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
-            
-           jTabbedPane1.setEnabledAt(i, false);
-            
+
+            jTabbedPane1.setEnabledAt(i, false);
+
         }
     }
 
@@ -99,26 +90,30 @@ public class AirportFrame extends javax.swing.JFrame {
             delayMinutes.addItem("" + i);
         }
     }
+
     private void updatePlaneCombo(ArrayList<String> ids) {
-    for (String id : ids) {
-        PLANE.addItem(id);
+        for (String id : ids) {
+            PLANE.addItem(id);
+        }
     }
-}
+
     private void updateLocationCombo(ArrayList<String> ids) {
-    for (String id : ids) {
-        departureLocation.addItem(id);
-        arrivalLocation.addItem(id);
-        scaleLocation.addItem(id);
+        for (String id : ids) {
+            departureLocation.addItem(id);
+            arrivalLocation.addItem(id);
+            scaleLocation.addItem(id);
+        }
     }
- }
-    private void updateFlightCombo(ArrayList<String> ids){
-        for(String id : ids){
+
+    private void updateFlightCombo(ArrayList<String> ids) {
+        for (String id : ids) {
             FLIGHT.addItem(id);
             delayId.addItem(id);
         }
     }
-    private void updatePassenngerCombo(ArrayList<String> ids){
-        for(String id : ids){
+
+    private void updatePassenngerCombo(ArrayList<String> ids) {
+        for (String id : ids) {
             userSelect.addItem(id);
         }
     }
@@ -1756,7 +1751,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Passenger> passengers = (ArrayList<Passenger>) response.getObject();
             for (Passenger passenger : passengers) {
-                    model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.getFormattedPhone(), passenger.getCountry(), passenger.getNumFlights()});
+                model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.getFormattedPhone(), passenger.getCountry(), passenger.getNumFlights()});
             }
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }

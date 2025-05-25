@@ -163,6 +163,7 @@ public class FlightController {
             }
             passenger.addFlight(flight);
             flight.addPassenger(passenger);
+            storage.notifyObservers();
 
             return new Response("Passenger added to flight successfully", Status.OK);
 

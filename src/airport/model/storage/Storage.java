@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author USUARIO
  */
-public class Storage {
+public class Storage extends Observable{
 
     private static Storage instance;
 
